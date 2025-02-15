@@ -11,7 +11,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: Pull Git LFS files
+        run: git lfs pull  # Đảm bảo tải file từ Git LFS
+
+      - name: Kiểm tra file model
+        run: ls -lh model/  # Kiểm tra xem file đã được tải đúng chưa
 
       - name: Set up Docker environment
         uses: docker/setup-buildx-action@v1
