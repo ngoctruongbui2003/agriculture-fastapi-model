@@ -7,16 +7,16 @@ from tensorflow.keras.models import load_model  # Thêm thư viện này
 app = FastAPI()
 
 # Load mô hình RandomForestRegressor (đã dùng pickle)
-with open("model/watering_time_predictor.pkl", "rb") as f:
+with open("./model/watering_time_predictor.pkl", "rb") as f:
     model = pickle.load(f)
 
-with open("model/scaler_watering_time_predictor.pkl", "rb") as f:
+with open("./model/scaler_watering_time_predictor.pkl", "rb") as f:
     scaler = pickle.load(f)
 
 # Load mô hình Keras (sửa lại cách load)
-model1 = load_model("model/predict_health_model.keras")  # Sửa cách load
+model1 = load_model("./model/predict_health_model.keras")  # Sửa cách load
 
-with open("model/scaler_predict_health_model.pkl", "rb") as f:
+with open("./model/scaler_predict_health_model.pkl", "rb") as f:
     scaler1 = pickle.load(f)
 
 
