@@ -44,8 +44,8 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/aws_key.pem
-          chmod 600 ~/.ssh/aws_key.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
 
       - name: Deploy to AWS EC2
         env:
@@ -55,7 +55,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           TAG_NAME: ${{ secrets.TAG_NAME }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem $SSH_USERNAME@$SSH_HOST << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $SSH_USERNAME@$SSH_HOST << 'EOF'
             mkdir -p /container && cd /container
 
             # Stop & Remove old container if exists
@@ -75,3 +75,6 @@ jobs:
             # Run new container
             docker run -d -p 3003:8000 --name ${{ secrets.IMAGE_NAME }}-production ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}-production:${{ secrets.TAG_NAME }}_${{ github.sha }}
           EOF
+
+          # Xóa private key sau khi dùng xong
+          rm -f private_key.pem
